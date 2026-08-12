@@ -1,0 +1,276 @@
+.stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  margin: var(--space-8) auto 0;
+}
+
+.clip {
+  width: 56px;
+  height: 14px;
+  border-radius: 7px 7px 3px 3px;
+  background: linear-gradient(180deg, #4a4a52, #202024);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.18), 0 4px 8px -2px rgba(0, 0, 0, 0.4);
+}
+
+.swing {
+  transform-origin: 50% 0;
+  touch-action: none;
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.swing:active {
+  cursor: grabbing;
+}
+
+.strap {
+  flex: none;
+  width: 30px;
+  height: 42px;
+  transform-origin: 50% 0%;
+  background: repeating-linear-gradient(
+    135deg,
+    var(--accent) 0 6px,
+    color-mix(in srgb, var(--accent) 65%, black) 6px 12px
+  );
+  box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.35);
+}
+
+.cardGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  perspective: 1400px;
+}
+
+.grommet {
+  width: 12px;
+  height: 12px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 3px solid color-mix(in srgb, var(--accent) 55%, black);
+  z-index: 1;
+}
+
+.card {
+  position: relative;
+  width: 240px;
+  height: 336px;
+  margin-top: -1px;
+  transform-style: preserve-3d;
+}
+
+.face,
+.back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-6) var(--space-5);
+  border-radius: 22px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 28px 56px -24px rgba(0, 0, 0, 0.45);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.back {
+  transform: rotateY(180deg);
+  justify-content: flex-start;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: var(--space-3);
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, #30d158 12%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, #30d158 30%, var(--card-border));
+  color: var(--text-secondary);
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+.pulseDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #30d158;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #30d158 20%, transparent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulseDot {
+    animation: none;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.photo {
+  width: 76px;
+  height: 76px;
+  margin-top: var(--space-3);
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--card-bg);
+  box-shadow: 0 0 0 1px var(--border-strong);
+}
+
+.name {
+  margin-top: var(--space-4);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.role {
+  margin-top: 0.2rem;
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+}
+
+.bottomGroup {
+  width: 100%;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.barcode {
+  width: 100%;
+  height: 22px;
+  border-radius: 3px;
+  opacity: 0.32;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--text) 0 2px,
+    transparent 2px 5px,
+    var(--text) 5px 6px,
+    transparent 6px 10px,
+    var(--text) 10px 13px,
+    transparent 13px 16px,
+    var(--text) 16px 17px,
+    transparent 17px 21px
+  );
+}
+
+.ctaButton {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: opacity 250ms var(--ease-out);
+}
+
+.ctaButton svg {
+  width: 15px;
+  height: 15px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ctaButton:hover {
+    opacity: 0.88;
+  }
+}
+
+.backButton {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--text-secondary);
+  border: 1px solid var(--card-border);
+  transition: border-color 250ms var(--ease-out), color 250ms var(--ease-out);
+}
+
+.backButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .backButton:hover {
+    border-color: var(--border-strong);
+    color: var(--text);
+  }
+}
+
+.backTitle {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-4);
+}
+
+.backLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.backLink {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--card-border);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: border-color 250ms var(--ease-out), background-color 250ms var(--ease-out), color 250ms var(--ease-out);
+}
+
+.backLink svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.backLink span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .backLink:hover {
+    border-color: var(--border-strong);
+    background: var(--chip-bg);
+    color: var(--text);
+  }
+}
