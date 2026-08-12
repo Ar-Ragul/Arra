@@ -1,5 +1,14 @@
-import { useRef } from 'react';
-import { motion, useMotionTemplate, useReducedMotion, useScroll, useSpring } from 'motion/react';
+import { useLayoutEffect, useRef, useState } from 'react';
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from 'motion/react';
 import { experience } from '../data/resume';
 import { Reveal } from './Reveal';
 import styles from './Experience.module.css';
@@ -36,12 +45,71 @@ function initials(company: string): string {
     .toUpperCase();
 }
 
+function TimelineBadge({
+  label,
+  isCurrent,
+  progressPx,
+  timelineRef,
+  reduceMotion,
+}: {
+  label: string;
+  isCurrent: boolean;
+  progressPx: MotionValue<number>;
+  timelineRef: React.RefObject<HTMLDivElement | null>;
+  reduceMotion: boolean | null;
+}) {
+  const badgeRef = useRef<HTMLSpanElement>(null);
+  const thresholdRef = useRef(0);
+  const [isReached, setIsReached] = useState(false);
+
+  useLayoutEffect(() => {
+    function measure() {
+      if (!badgeRef.current || !timelineRef.current) return;
+      const badgeRect = badgeRef.current.getBoundingClientRect();
+      const timelineRect = timelineRef.current.getBoundingClientRect();
+      thresholdRef.current = badgeRect.top + badgeRect.height / 2 - timelineRect.top;
+      setIsReached(progressPx.get() >= thresholdRef.current);
+    }
+    // Deferred to rAF: the ancestor `.timeline` div's ref attaches after this
+    // component's own effects (React commits refs/effects bottom-up), so
+    // timelineRef.current is still null if measured synchronously here.
+    const raf = requestAnimationFrame(measure);
+    window.addEventListener('resize', measure);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', measure);
+    };
+  }, [progressPx, timelineRef]);
+
+  useMotionValueEvent(progressPx, 'change', (latest) => {
+    setIsReached(latest >= thresholdRef.current);
+  });
+
+  const filled = isCurrent || reduceMotion || isReached;
+
+  return (
+    <span ref={badgeRef} className={styles.badge} data-current={filled}>
+      {label}
+    </span>
+  );
+}
+
 export function Experience() {
   const timelineRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
+  const [trackHeight, setTrackHeight] = useState(0);
   const { scrollYProgress } = useScroll({ target: timelineRef, offset: ['start 0.8', 'end 0.55'] });
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 120, damping: 26, mass: 0.4 });
   const progressTransform = useMotionTemplate`scaleY(${reduceMotion ? 1 : smoothProgress})`;
+  const progressPx = useTransform(smoothProgress, (v) => v * trackHeight);
+
+  useLayoutEffect(() => {
+    if (!timelineRef.current) return;
+    const el = timelineRef.current;
+    const observer = new ResizeObserver(([entry]) => setTrackHeight(entry.contentRect.height));
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section id="experience">
@@ -60,7 +128,13 @@ export function Experience() {
             return (
               <Reveal as="div" key={`${job.company}-${job.period}`} delay={i * 60} className={styles.entry}>
                 <div className={styles.badgeCol}>
-                  <span className={styles.badge} data-current={isCurrent}>{initials(job.company)}</span>
+                  <TimelineBadge
+                    label={initials(job.company)}
+                    isCurrent={isCurrent}
+                    progressPx={progressPx}
+                    timelineRef={timelineRef}
+                    reduceMotion={reduceMotion}
+                  />
                 </div>
 
                 <div className={styles.content}>

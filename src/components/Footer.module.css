@@ -1,6 +1,121 @@
 .contact {
+  position: relative;
+  overflow: hidden;
   padding-block: var(--space-24);
   text-align: center;
+}
+
+.mesh {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+
+.blobBlue {
+  top: 10%;
+  left: 8%;
+  width: 26vw;
+  height: 26vw;
+  max-width: 380px;
+  max-height: 380px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 30%, transparent), transparent 70%);
+  opacity: calc(0.32 * var(--hero-blob-opacity-scale));
+  animation: driftA 26s ease-in-out infinite alternate;
+}
+
+.blobViolet {
+  bottom: 6%;
+  right: 10%;
+  width: 24vw;
+  height: 24vw;
+  max-width: 340px;
+  max-height: 340px;
+  background: radial-gradient(circle, color-mix(in srgb, #8a5cf6 28%, transparent), transparent 70%);
+  opacity: calc(0.28 * var(--hero-blob-opacity-scale));
+  animation: driftB 22s ease-in-out infinite alternate;
+}
+
+.blobTeal {
+  top: 30%;
+  right: 30%;
+  width: 16vw;
+  height: 16vw;
+  max-width: 260px;
+  max-height: 260px;
+  background: radial-gradient(circle, color-mix(in srgb, #34d3c9 26%, transparent), transparent 70%);
+  opacity: calc(0.2 * var(--hero-blob-opacity-scale));
+  animation: driftC 19s ease-in-out infinite alternate;
+}
+
+@keyframes driftA {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(5vw, 4vh) scale(1.07); }
+  100% { transform: translate(-3vw, 6vh) scale(0.96); }
+}
+
+@keyframes driftB {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-4vw, -5vh) scale(1.05); }
+  100% { transform: translate(4vw, -2vh) scale(0.95); }
+}
+
+@keyframes driftC {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-3vw, 4vh) scale(0.92); }
+  100% { transform: translate(4vw, 2vh) scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob {
+    animation: none;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin-bottom: var(--space-6);
+}
+
+.pulseDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #30d158;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #30d158 20%, transparent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulseDot {
+    animation: none;
+  }
 }
 
 .title {
