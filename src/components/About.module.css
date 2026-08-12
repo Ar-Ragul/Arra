@@ -6,7 +6,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-8);
-  align-items: start;
+  align-items: stretch;
 }
 
 /* ---------- Profile card ---------- */
@@ -55,32 +55,7 @@
 }
 
 .stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
   margin-bottom: var(--space-6);
-}
-
-.stat {
-  text-align: center;
-  padding: 0.75rem 0.4rem;
-  border-radius: var(--radius-sm);
-  background: var(--chip-bg);
-}
-
-.statValue {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-}
-
-.statLabel {
-  margin-top: 0.15rem;
-  font-size: 0.6875rem;
-  color: var(--text-tertiary);
-  letter-spacing: 0.01em;
 }
 
 .divider {
@@ -152,10 +127,16 @@
 }
 
 .approachNote {
-  margin-top: var(--space-6);
-  padding-top: var(--space-6);
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
   border-top: 1px solid var(--border);
-  font-size: 0.9375rem;
+  text-align: center;
+}
+
+.approachNote p {
+  max-width: 52ch;
+  margin-inline: auto;
+  font-size: 1.0625rem;
   font-style: italic;
   color: var(--text-secondary);
   line-height: 1.55;

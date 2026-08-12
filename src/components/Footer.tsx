@@ -6,8 +6,18 @@ export function Footer() {
   return (
     <>
       <section id="contact" className={styles.contact}>
-        <div className="container">
+        <div className={styles.mesh} aria-hidden="true">
+          <span className={`${styles.blob} ${styles.blobBlue}`} />
+          <span className={`${styles.blob} ${styles.blobViolet}`} />
+          <span className={`${styles.blob} ${styles.blobTeal}`} />
+        </div>
+
+        <div className={`container ${styles.content}`}>
           <Reveal>
+            <div className={styles.statusBadge}>
+              <span className={styles.pulseDot} aria-hidden="true" />
+              Available for new opportunities
+            </div>
             <h2 className={`section-title ${styles.title}`}>Let’s build something worth shipping.</h2>
             <p className={`section-lede ${styles.lede}`}>
               Open to full-stack and front-end roles where craft and speed both matter. Reach out — I usually

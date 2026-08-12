@@ -1,39 +1,13 @@
 import { experience, highlights, profile, projects, skillGroups } from '../data/resume';
 import { Reveal } from './Reveal';
-import { useCountUp } from '../hooks/useCountUp';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+import { StatRow } from './StatRow';
 import styles from './About.module.css';
 
 const STATS = [
   { label: 'Years experience', value: 4, suffix: '+' },
-  { label: 'Companies', value: experience.length, suffix: '' },
-  { label: 'Projects shipped', value: projects.length, suffix: '' },
+  { label: 'Companies', value: experience.length },
+  { label: 'Projects shipped', value: projects.length },
 ];
-
-function StatRow() {
-  const { ref, visible } = useScrollReveal();
-
-  return (
-    <div ref={ref as never} className={styles.stats}>
-      {STATS.map((stat) => (
-        <Stat key={stat.label} {...stat} start={visible} />
-      ))}
-    </div>
-  );
-}
-
-function Stat({ label, value, suffix, start }: { label: string; value: number; suffix: string; start: boolean }) {
-  const count = useCountUp(value, start);
-  return (
-    <div className={styles.stat}>
-      <p className={styles.statValue}>
-        {count}
-        {suffix}
-      </p>
-      <p className={styles.statLabel}>{label}</p>
-    </div>
-  );
-}
 
 function SkillsPanel() {
   return (
@@ -52,10 +26,6 @@ function SkillsPanel() {
           </div>
         ))}
       </div>
-
-      <p className={styles.approachNote}>
-        “I reach for the right tool for the job — pragmatic over dogmatic, and always with an eye on what the user actually feels.”
-      </p>
     </Reveal>
   );
 }
@@ -81,7 +51,7 @@ export function About() {
 
             <p className={styles.tagline}>“{profile.tagline}”</p>
 
-            <StatRow />
+            <StatRow stats={STATS} className={styles.stats} />
 
             <div className={styles.divider} />
 
@@ -99,6 +69,10 @@ export function About() {
 
           <SkillsPanel />
         </div>
+
+        <Reveal delay={140} className={styles.approachNote}>
+          <p>“I reach for the right tool for the job — pragmatic over dogmatic, and always with an eye on what the user actually feels.”</p>
+        </Reveal>
       </div>
     </section>
   );
